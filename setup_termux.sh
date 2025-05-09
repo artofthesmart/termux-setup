@@ -40,8 +40,25 @@ else
   echo "If you need to update Oh-My-Zsh, open a zsh shell and run 'omz update'."
 fi
 
+# --- Task 4: Install and Configure Powerlevel10k ---
+echo ""
+echo "--- Installing Powerlevel10k ---"
+# Clone Powerlevel10k into the custom themes directory
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]; then
+  echo "Cloning Powerlevel10k repository..."
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" || { echo "ERROR: Failed to clone Powerlevel10k."; exit 1; }
+  echo "--- Powerlevel10k cloning complete ---"
 
-# --- Task 4: Install Nerd Font (Roboto Mono) ---
+  echo "Setting ZSH_THEME to powerlevel10k/powerlevel10k in ~/.zshrc"
+  # Use sed to find the line starting with ZSH_THEME= and replace it
+  # Using # as a delimiter in sed to avoid issues with / in the path
+  sed -i 's#^ZSH_THEME=".*"#ZSH_THEME="powerlevel10k/powerlevel10k"#' "$HOME/.zshrc" || { echo "ERROR: Failed to update ZSH_THEME in ~/.zshrc."; exit 1; }
+  echo "--- ZSH_THEME updated ---"
+else
+  echo "Powerlevel10k directory already exists. Skipping cloning and .zshrc modification."
+fi
+
+# --- Task 5: Install Nerd Font (Roboto Mono) ---
 echo ""
 echo "--- Installing Nerd Font (Roboto Mono) ---"
 FONT_DIR="$HOME/.termux"
@@ -65,7 +82,7 @@ termux-reload-settings
 echo "--- Nerd Font installation complete ---"
 echo "You may need to restart Termux for the new font to take effect."
 
-# --- Task 5: Install LazyVim ---
+# --- Task 6: Install LazyVim ---
 echo ""
 echo "--- Installing LazyVim ---"
 NVIM_CONFIG_DIR="$HOME/.config/nvim"

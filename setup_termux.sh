@@ -65,6 +65,7 @@ FONT_DIR="$HOME/.termux"
 FONT_FILE="font.ttf"
 FONT_PATH="$FONT_DIR/$FONT_FILE"
 FONT_URL="https://github.com/ryanoasis/nerd-fonts/raw/refs/heads/master/patched-fonts/RobotoMono/Medium/RobotoMonoNerdFontMono-Medium.ttf"
+TERMUX_PROPERTIES="$HOME/.termux/termux.properties" # Define variable for clarity
 
 mkdir -p "$FONT_DIR" || { echo "ERROR: Failed to create directory $FONT_DIR."; exit 1; }
 
@@ -75,6 +76,11 @@ else
   wget -O "$FONT_PATH" "$FONT_URL" || { echo "ERROR: Failed to download Nerd Font."; exit 1; }
   echo "Font downloaded successfully to $FONT_PATH."
 fi
+
+# --- Add extra-keys=[] to termux.properties ---
+echo "Adding 'extra-keys=[]' to $TERMUX_PROPERTIES..."
+echo "extra-keys=[]" >> "$TERMUX_PROPERTIES" || { echo "ERROR: Failed to write to $TERMUX_PROPERTIES."; exit 1; }
+echo "--- Added extra-keys=[] ---"
 
 echo "Informing Termux to reload settings..."
 # This command tells Termux to look for the font file in ~/.termux/font.ttf
